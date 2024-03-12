@@ -22,3 +22,6 @@ firestore.settings({
 
 // ビンゴシートを作成する関数
 export { createBingoSheet } from "@/feature/create-bingo-sheet/create-bingo-sheet.function";
+
+// 抽選番号を取得する関数
+export { getLotteryNumber } from "@/feature/get-lottery-number/get-lottery-number.function";
