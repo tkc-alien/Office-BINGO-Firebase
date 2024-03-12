@@ -1,0 +1,13 @@
+{
+  "name": "office_bingo_firebase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "firebase emulators:start --import emulators-data --export-on-exit",
+    "deploy": "firebase deploy"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
