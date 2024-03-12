@@ -18,10 +18,13 @@
   "main": "lib/index.js",
   "dependencies": {
     "firebase-admin": "^11.8.0",
-    "firebase-functions": "^4.3.1"
+    "firebase-functions": "^4.3.1",
+    "module-alias": "^2.2.3"
   },
   "devDependencies": {
     "@line/ts-remove-unused": "^0.2.0",
+    "@types/module-alias": "^2.0.4",
+    "@types/node": "^20.11.25",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
     "cspell": "^8.6.0",
