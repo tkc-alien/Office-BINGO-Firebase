@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "office-bingo-dev"
+    "develop": "office-bingo-dev",
+    "staging": "office-bingo-stg"
   }
 }
