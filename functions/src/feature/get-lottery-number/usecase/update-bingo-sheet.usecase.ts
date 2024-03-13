@@ -1,10 +1,7 @@
-import { getFirestore } from "firebase-admin/firestore";
-
 import { UID } from "@/alias";
 import { BingoSheetEntity } from "@/entity/bingo-sheet.entity";
 import { LotteryNumberEntity } from "@/entity/lottery-number.entity";
-
-const firestore = getFirestore();
+import { BingoSheetRepository } from "@/repository/bingo-sheet.repository";
 
 /**
  * ビンゴシートに抽選番号を反映するUseCase
@@ -23,11 +20,8 @@ export class UpdateBingoSheetUseCase {
     applying: LotteryNumberEntity
   ): Promise<boolean> {
     // ビンゴシートを取得する
-    const sheetDoc = await firestore
-      .collection("users")
-      .doc(uid)
-      .collection("sheets")
-      .doc(sheetId)
+    const sheetDoc = await new BingoSheetRepository()
+      .document(uid, sheetId)
       .get();
 
     // 取得したドキュメントのデータが存在しなければ処理を抜ける
@@ -35,7 +29,7 @@ export class UpdateBingoSheetUseCase {
     if (!data) return false;
 
     // ビンゴシートにキャスト
-    const bingoSheet: BingoSheetEntity = data as BingoSheetEntity;
+    const bingoSheet: BingoSheetEntity = data;
 
     // 取得したビンゴシートの番号を走査して値を更新する
     for (let i = 0; i < bingoSheet.sheet.length; i++) {
@@ -45,7 +39,9 @@ export class UpdateBingoSheetUseCase {
         bingoSheet.sheet[i].gotAt === undefined
       ) {
         // 更新用のEntityを作成
-        const newSheet: BingoSheetEntity = { ...bingoSheet };
+        const newSheet: BingoSheetEntity = new BingoSheetEntity({
+          ...bingoSheet,
+        });
         // 該当の番号を更新
         newSheet.sheet[i] = applying;
         // 書き込み

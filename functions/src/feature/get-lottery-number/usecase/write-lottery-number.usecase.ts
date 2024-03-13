@@ -1,9 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-
 import { UID } from "@/alias";
 import { LotteryNumberEntity } from "@/entity/lottery-number.entity";
-
-const firestore = getFirestore();
+import { LotteryNumberRepository } from "@/repository/lottery-number.repository";
 
 /**
  * 抽選番号書き込みUseCase
@@ -14,10 +11,8 @@ export class WriteLotteryNumberUseCase {
     lotteryNumber: LotteryNumberEntity
   ): Promise<string> {
     // 書き込み
-    const doc = await firestore
-      .collection("users")
-      .doc(uid)
-      .collection("lotteryLogs")
+    const doc = await new LotteryNumberRepository()
+      .collection(uid)
       .add(lotteryNumber);
     // ドキュメントIDを返却
     return doc.id;
