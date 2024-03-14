@@ -1,9 +1,6 @@
-import { getFirestore } from "firebase-admin/firestore";
-
 import { UID } from "@/alias";
 import { BingoSheetEntity } from "@/entity/bingo-sheet.entity";
-
-const firestore = getFirestore();
+import { BingoSheetRepository } from "@/repository/bingo-sheet.repository";
 
 /**
  * ビンゴシート書き込みUseCase
@@ -20,10 +17,8 @@ export class WriteBingoSheetUseCase {
     bingoSheet: BingoSheetEntity
   ): Promise<string> {
     // 書き込み
-    const doc = await firestore
-      .collection("users")
-      .doc(uid)
-      .collection("sheets")
+    const doc = await new BingoSheetRepository()
+      .collection(uid)
       .add(bingoSheet);
     // ドキュメントIDを返却
     return doc.id;
