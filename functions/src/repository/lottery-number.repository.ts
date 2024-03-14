@@ -1,23 +1,10 @@
-import {
-  DocumentData,
-  FirestoreDataConverter,
-  getFirestore,
-} from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { UID } from "@/alias";
+import { converter } from "@/common/firestore-converter";
 import { LotteryNumberEntity } from "@/entity/lottery-number.entity";
 
 const firestore = getFirestore();
-
-const converter: FirestoreDataConverter<LotteryNumberEntity> = {
-  toFirestore(doc): DocumentData {
-    return JSON.parse(JSON.stringify(doc));
-  },
-  fromFirestore(snapshot): LotteryNumberEntity {
-    const data = snapshot.data() as Readonly<LotteryNumberEntity>;
-    return new LotteryNumberEntity(data);
-  },
-};
 
 export class LotteryNumberRepository {
   /**
@@ -30,7 +17,7 @@ export class LotteryNumberRepository {
       .collection("users")
       .doc(uid)
       .collection("lotteryLogs")
-      .withConverter(converter);
+      .withConverter(converter<LotteryNumberEntity>());
   }
 
   /**

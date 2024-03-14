@@ -14,9 +14,10 @@ export class GenerateLotteryNumberUseCase {
     // 1 ~ 99 の範囲で乱数を生成
     const number = Math.floor(Math.random() * 100);
     // 返却
-    return new LotteryNumberEntity({
+    const lotteryNumber: LotteryNumberEntity = {
       number: number,
       gotAt: Timestamp.now(),
-    });
+    };
+    return lotteryNumber;
   }
 }

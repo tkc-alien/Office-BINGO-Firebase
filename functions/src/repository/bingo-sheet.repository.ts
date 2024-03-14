@@ -1,23 +1,10 @@
-import {
-  DocumentData,
-  FirestoreDataConverter,
-  getFirestore,
-} from "firebase-admin/firestore";
+import { getFirestore } from "firebase-admin/firestore";
 
 import { UID } from "@/alias";
+import { converter } from "@/common/firestore-converter";
 import { BingoSheetEntity } from "@/entity/bingo-sheet.entity";
 
 const firestore = getFirestore();
-
-const converter: FirestoreDataConverter<BingoSheetEntity> = {
-  toFirestore(doc): DocumentData {
-    return JSON.parse(JSON.stringify(doc));
-  },
-  fromFirestore(snapshot): BingoSheetEntity {
-    const data = snapshot.data() as Readonly<BingoSheetEntity>;
-    return new BingoSheetEntity(data);
-  },
-};
 
 export class BingoSheetRepository {
   /**
@@ -30,7 +17,7 @@ export class BingoSheetRepository {
       .collection("users")
       .doc(uid)
       .collection("sheets")
-      .withConverter(converter);
+      .withConverter(converter<BingoSheetEntity>());
   }
 
   /**

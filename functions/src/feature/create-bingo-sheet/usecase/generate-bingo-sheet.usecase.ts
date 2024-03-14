@@ -26,17 +26,18 @@ export class GenerateBingoSheetUseCase {
     const sliced = rand.slice(0, 25);
     const sheet: LotteryNumberEntity[] = sliced.map<LotteryNumberEntity>(
       (value) => {
-        return new LotteryNumberEntity({
+        return {
           number: value,
           gotAt: undefined,
-        });
+        };
       }
     );
 
     // 返却
-    return new BingoSheetEntity({
+    const bingoSheet: BingoSheetEntity = {
       sheet: sheet,
       createdAt: Timestamp.now(),
-    });
+    };
+    return bingoSheet;
   }
 }

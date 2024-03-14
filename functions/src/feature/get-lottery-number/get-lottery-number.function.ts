@@ -14,18 +14,25 @@ import { WriteLotteryNumberUseCase } from "@/feature/get-lottery-number/usecase/
  */
 export const getLotteryNumber = onCall<
   GetLotteryNumberRequest,
-  GetLotteryNumberResponse
->((_request) => {
+  Promise<GetLotteryNumberResponse>
+>(async (_request) => {
   // バリデーション
   const [uid, request] = new GetLotteryNumberValidator().verify(_request);
   // 抽選
   const lotteryNumber = new GenerateLotteryNumberUseCase().execute();
   // 抽選番号を書き込み
-  new WriteLotteryNumberUseCase().execute(uid, lotteryNumber);
+  const lotteryNumberId: string = await new WriteLotteryNumberUseCase().execute(
+    uid,
+    lotteryNumber
+  );
   // 指定のシートと照合して更新
-  new UpdateBingoSheetUseCase().execute(uid, request.sheetId, lotteryNumber);
+  await new UpdateBingoSheetUseCase().execute(
+    uid,
+    request.sheetId,
+    lotteryNumber
+  );
   // 返却
   return {
-    data: lotteryNumber,
+    docId: lotteryNumberId,
   };
 });

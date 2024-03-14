@@ -25,11 +25,8 @@ export class UpdateBingoSheetUseCase {
       .get();
 
     // 取得したドキュメントのデータが存在しなければ処理を抜ける
-    const data = sheetDoc.data();
-    if (!data) return false;
-
-    // ビンゴシートにキャスト
-    const bingoSheet: BingoSheetEntity = data;
+    const bingoSheet: BingoSheetEntity | undefined = sheetDoc.data();
+    if (!bingoSheet) return false;
 
     // 取得したビンゴシートの番号を走査して値を更新する
     for (let i = 0; i < bingoSheet.sheet.length; i++) {
@@ -39,9 +36,9 @@ export class UpdateBingoSheetUseCase {
         bingoSheet.sheet[i].gotAt === undefined
       ) {
         // 更新用のEntityを作成
-        const newSheet: BingoSheetEntity = new BingoSheetEntity({
+        const newSheet: BingoSheetEntity = {
           ...bingoSheet,
-        });
+        };
         // 該当の番号を更新
         newSheet.sheet[i] = applying;
         // 書き込み

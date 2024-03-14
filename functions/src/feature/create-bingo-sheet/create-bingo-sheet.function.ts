@@ -13,16 +13,19 @@ import { WriteBingoSheetUseCase } from "@/feature/create-bingo-sheet/usecase/wri
  */
 export const createBingoSheet = onCall<
   CreateBingoSheetRequest,
-  CreateBingoSheetResponse
->((_request) => {
+  Promise<CreateBingoSheetResponse>
+>(async (_request) => {
   // バリデーション
   const [uid, _] = new CreateBingoSheetValidator().verify(_request);
   // ビンゴシートを作成する
   const bingoSheet = new GenerateBingoSheetUseCase().execute();
   // ビンゴシートを書き込む
-  new WriteBingoSheetUseCase().execute(uid, bingoSheet);
+  const bingoSheetId = await new WriteBingoSheetUseCase().execute(
+    uid,
+    bingoSheet
+  );
   // レスポンス
   return {
-    data: bingoSheet,
+    docId: bingoSheetId,
   };
 });
